@@ -258,6 +258,216 @@
             
               
                 
+                <a class="post-title-link" href="/2016/08/08/Android初级进阶之自定义时钟-一/" itemprop="url">
+                  Android初级进阶之自定义时钟(一)
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-08-08T16:22:13+08:00" content="2016-08-08">
+              2016-08-08
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>一直以为仪表盘，时钟之类的非常的难，不敢去触摸这个领域。真正接触了才发现不过如此。</p>
+<h4 id="技术要点"><a href="#技术要点" class="headerlink" title="技术要点"></a>技术要点</h4><pre><code>1. cancvas
+        1. Cancvas.save()        保存画布
+        2. Cancvas.restore()    合并画布
+        3. Cancvas.translate()    切换x,y坐标点
+        4. Cancvas.rotate()        旋转画布
+2. 自定义View相关的知识
+    1. Measure
+</code></pre><h4 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h4><pre><code>实现静态的时钟UI
+</code></pre><h4 id="效果图"><a href="#效果图" class="headerlink" title="效果图"></a>效果图</h4><p><img src="http://obh9jd33g.bkt.clouddn.com/colick_img.png" alt=""></p>
+<h5 id="1-测量"><a href="#1-测量" class="headerlink" title="1.测量"></a>1.测量</h5><p>测量View的宽度与高度，因为是画一个圆形的时钟，所以View取得是高度与宽度的最小值，一下是测量方法</p>
+<pre><code><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div></pre></td><td class="code"><pre><div class="line">    private int measureSize(int spec) &#123;</div><div class="line">        int result;</div><div class="line">        int size = MeasureSpec.getSize(spec);//获取大小</div><div class="line">        int mode = MeasureSpec.getMode(spec);//获取模式</div><div class="line">        if (mode == MeasureSpec.EXACTLY) &#123;</div><div class="line">            result = size;</div><div class="line">        &#125; else &#123;</div><div class="line">            result = 100;</div><div class="line">            if (mode == MeasureSpec.AT_MOST) &#123;</div><div class="line">                result = Math.min(result, size);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        return result;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">	@Override</div><div class="line">    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) &#123;</div><div class="line">        mCircleWidth = Math.min(measureSize(heightMeasureSpec), measureSize(widthMeasureSpec));</div><div class="line">        super.onMeasure(widthMeasureSpec, heightMeasureSpec);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">	``` </div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line">##### 2.绘制最外层的圆</div><div class="line"></div><div class="line">	``` java</div><div class="line">	//外部圆</div><div class="line">    Paint paintCircle = new Paint();</div><div class="line">    paintCircle.setStyle(Paint.Style.STROKE);//圆环</div><div class="line">    paintCircle.setAntiAlias(true);//抗锯齿</div><div class="line">    paintCircle.setStrokeWidth(5);//圆环宽度</div><div class="line">    canvas.drawCircle(mCircleWidth / 2, mCircleWidth / 2, mCircleWidth / 2 - 20/*减去20的原因是中心点留白*/, paintCircle);</div><div class="line">	``` </div><div class="line"></div><div class="line">![](http://obh9jd33g.bkt.clouddn.com/%E6%97%B6%E9%92%9F-%E5%A4%96%E5%B1%82%E7%9A%84%E5%9C%86.png)</div><div class="line"></div><div class="line">##### 3.绘制刻度线与刻度值</div><div class="line"></div><div class="line">绘制刻度线与刻度值是最大的难点，在这里就是利用了Canvas为我们提供的rotate方法，顾名思义，就是旋转画布。我们以视图坐标系 x y 进行绘制，没绘制完成一次，旋转相应的角度就完成了刻度线的绘制。玩过PS的人应该好理解。</div><div class="line"></div><div class="line">	``` java</div><div class="line">    //刻度线</div><div class="line">    Paint paintDegree = new Paint();</div><div class="line">    paintDegree.setStrokeWidth(3);</div><div class="line">    for (int i = 0; i &lt; 60; i++) &#123;</div><div class="line">        if (i % 5 == 0) &#123;</div><div class="line">            paintDegree.setStrokeWidth(5);// 小时</div><div class="line">            paintDegree.setTextSize(30);</div><div class="line">            canvas.drawLine(mCircleWidth / 2, 20/*绘制外圆减去的值*/, mCircleWidth / 2, 60/*刻度线的长度*/, paintDegree);</div><div class="line">            String degree = "12";</div><div class="line">            if (i != 0)</div><div class="line">                degree = String.valueOf(i / 5);</div><div class="line">            canvas.drawText(degree, mCircleWidth / 2 - paintDegree.measureText(degree) / 2, 90/*字体的高度*/, paintDegree);</div><div class="line">        &#125; else &#123;</div><div class="line">            paintDegree.setStrokeWidth(3);//秒</div><div class="line">            paintDegree.setTextSize(15);</div><div class="line">            canvas.drawLine(mCircleWidth / 2, 20/*绘制外圆减去的值*/, mCircleWidth / 2, 30/*刻度线的长度*/, paintDegree);</div><div class="line">            String degree = String.valueOf(i);</div><div class="line">            canvas.drawText(degree, mCircleWidth / 2 - paintDegree.measureText(degree) / 2, 60/*字体的高度*/, paintDegree);</div><div class="line">        &#125;</div><div class="line">        // 旋转六度，360度/60秒  以时钟的中心点进行旋转</div><div class="line">        canvas.rotate(6, mCircleWidth / 2, mCircleWidth / 2);</div><div class="line">    &#125;</div><div class="line">	``` </div><div class="line"></div><div class="line">![](http://obh9jd33g.bkt.clouddn.com/%E6%97%B6%E9%92%9F-%E5%88%BB%E5%BA%A6%E5%80%BC.png)</div><div class="line"></div><div class="line">##### 4. 绘制时分秒指针</div><div class="line">	``` java</div><div class="line">    //画针</div><div class="line">    Paint paintHour = new Paint();</div><div class="line">    paintHour.setStrokeWidth(20);</div><div class="line">    Paint paintMinute = new Paint();</div><div class="line">    paintMinute.setStrokeWidth(10);</div><div class="line">    Paint paintSecond = new Paint();</div><div class="line">    paintSecond.setStrokeWidth(7);</div><div class="line">    canvas.save();</div><div class="line">    // 将 x y 点移到 中心</div><div class="line">    canvas.translate(mCircleWidth / 2, mCircleWidth / 2);</div><div class="line">    //float startX, float startY, float stopX, float stopY</div><div class="line">    canvas.drawLine(0, 0, 100, 100/*暂时写死*/, paintHour);</div><div class="line">    canvas.drawLine(0, 0, 100, 280, paintSecond);</div><div class="line">    canvas.drawLine(0, 0, 100, 200, paintMinute);</div><div class="line">    //合并 画布</div><div class="line">    canvas.restore();</div></pre></td></tr></table></figure>
+</code></pre><p><img src="http://obh9jd33g.bkt.clouddn.com/colick_img.png" alt=""></p>
+<h5 id="PS"><a href="#PS" class="headerlink" title="PS"></a>PS</h5><p>Android初级进阶之自定义时钟(一)就到这里结束，原谅我的文学水平，没有过多的文字修饰。</p>
+<p>Android初级进阶之自定义时钟(二)：</p>
+<pre><code>1. 完成时分秒指针的计算。
+2. 与系统时间进行同步，完成真正的时钟。
+</code></pre>
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/08/08/随记-2016年8月8日/" itemprop="url">
+                  随记-2016年8月8日
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-08-08T14:54:14+08:00" content="2016-08-08">
+              2016-08-08
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>时间总是难熬。</p>
+<p>2014年6月参加工作，到今天已经是两年了，任然是一个初级程序员，我一直在迷茫，根本静不下心来学习。刚好，公司的项目也做的差不多了，于是乎买了两本书，强迫自己看下去。自己记下这些东西，只是为了激励自己不断的上进，不断的学习。</p>
+<p>到现在为止，我在三家公司工作过。第一家是在贵阳，是一个师兄创业开的公司，规模不算大，主要业务就是外包，各种各样的外包，总共呆了一年零4个月。因为我在学校主修的就是java，所以刚开始进去的时候主要是做java，也就是j2ee,写后台、写前端。。。，后来来了php，我就学习转做Android,边做边学，一直做各种各样的东西。月薪也仅仅能够养活自己。</p>
+<p>2015年10月，受到了高薪的诱惑，终于决定外出发展，来到了深圳。本以为以我一年多的工作经验，很快就能找到一份好的工作，然而事实是残酷的。一个月过去了，基本上都是等通知，别人说得最多的一句话就是：”一年工作经验等于无，尤其是外包”。事实上也是这样，外包这个东西，要求的就是快，不会太深入，基本上只需要复制”轮子”就可以了，这也养成了我的懒习惯，能复制就不写。</p>
+<p>就在这迷茫的日子中，我找到了我第二份工作，5K，做全栈。。。然而我只干了一个星期就跑路，能力不够啊。</p>
+<p>2015年12月4日，找到了我现在的这份工作，8K，只专注与做安卓，虽然只有我一个人，但是还是不错，快一年了。学到的东西比原来一年多学到的更多。也陷入了瓶颈，无法迈向中级工程师。所以我决定开始写博客，看书，发明轮子。</p>
+<p>写博客是为了时刻提醒自己！</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/08/06/Android初级进阶之Shape/" itemprop="url">
                   Android初级进阶之Shape
                 </a>
@@ -402,7 +612,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">1</span>
+              <span class="site-state-item-count">3</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
