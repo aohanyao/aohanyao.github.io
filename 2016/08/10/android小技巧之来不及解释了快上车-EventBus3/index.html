@@ -1,0 +1,641 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="什么是EventBus先附上EventBus的git地址
+EventBus，就按照名字翻译来说”事件公共汽车”,官方的说法是”EventBus is a publish/subscribe event bus optimized for Android.”也就是”eventbus是Android发布/订阅事件总线”。或许不太好理解，但是在我现在做的这个项目中，我已经用EventBus来取代广播和h">
+<meta property="og:type" content="article">
+<meta property="og:title" content="android小技巧之来不及解释了快上车--EventBus3">
+<meta property="og:url" content="http://yoursite.com/2016/08/10/android小技巧之来不及解释了快上车-EventBus3/index.html">
+<meta property="og:site_name" content="前行者">
+<meta property="og:description" content="什么是EventBus先附上EventBus的git地址
+EventBus，就按照名字翻译来说”事件公共汽车”,官方的说法是”EventBus is a publish/subscribe event bus optimized for Android.”也就是”eventbus是Android发布/订阅事件总线”。或许不太好理解，但是在我现在做的这个项目中，我已经用EventBus来取代广播和h">
+<meta property="og:image" content="https://raw.githubusercontent.com/greenrobot/EventBus/master/EventBus-Publish-Subscribe.png">
+<meta property="og:image" content="http://obh9jd33g.bkt.clouddn.com/eventBusSample.gif">
+<meta property="og:updated_time" content="2016-08-10T08:13:36.852Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="android小技巧之来不及解释了快上车--EventBus3">
+<meta name="twitter:description" content="什么是EventBus先附上EventBus的git地址
+EventBus，就按照名字翻译来说”事件公共汽车”,官方的说法是”EventBus is a publish/subscribe event bus optimized for Android.”也就是”eventbus是Android发布/订阅事件总线”。或许不太好理解，但是在我现在做的这个项目中，我已经用EventBus来取代广播和h">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/greenrobot/EventBus/master/EventBus-Publish-Subscribe.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '江俊超'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/08/10/android小技巧之来不及解释了快上车-EventBus3/"/>
+
+  <title> android小技巧之来不及解释了快上车--EventBus3 | 前行者 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">前行者</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">不断前行，从未停滞</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                android小技巧之来不及解释了快上车--EventBus3
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-08-10T09:52:32+08:00" content="2016-08-10">
+              2016-08-10
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="什么是EventBus"><a href="#什么是EventBus" class="headerlink" title="什么是EventBus"></a>什么是EventBus</h2><p><a href="https://github.com/greenrobot/EventBus" target="_blank" rel="external">先附上EventBus的git地址</a></p>
+<p>EventBus，就按照名字翻译来说”事件公共汽车”,官方的说法是”EventBus is a publish/subscribe event bus optimized for Android.”也就是”eventbus是Android发布/订阅事件总线”。或许不太好理解，但是在我现在做的这个项目中，我已经用EventBus来取代广播和handler，而且十分的好用及简单。</p>
+<p>下面附上从官方偷过来的图<br><img src="https://raw.githubusercontent.com/greenrobot/EventBus/master/EventBus-Publish-Subscribe.png" alt=""></p>
+<h2 id="如何获取EventBus"><a href="#如何获取EventBus" class="headerlink" title="如何获取EventBus"></a>如何获取EventBus</h2><ol>
+<li><p>Android Studio(如果你还没有用上，那你就out了)直接使用依赖的方式即可</p>
+<pre><code>compile &apos;org.greenrobot:eventbus:3.0.0&apos;
+</code></pre></li>
+<li><p>Eclipse…..只能去下载jar包了</p>
+<p><a href="http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22de.greenrobot%22%20AND%20a%3A%22eventbus%22" target="_blank" rel="external">EventBus jar 下载地址</a></p>
+<h2 id="EventBus使用方法"><a href="#EventBus使用方法" class="headerlink" title="EventBus使用方法"></a>EventBus使用方法</h2><p>EventBus使用是特别的简单，只需要四步(当然依赖不算一步)</p>
+<h3 id="第一步-注册"><a href="#第一步-注册" class="headerlink" title="第一步 注册"></a>第一步 注册</h3><p>在需要的地方进行注册，一般是在onCreate方法内进行注册</p>
+</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">EventBus.getDefault().register(<span class="keyword">this</span>);</div></pre></td></tr></table></figure>
+<h3 id="第二步-取消注册"><a href="#第二步-取消注册" class="headerlink" title="第二步 取消注册"></a>第二步 取消注册</h3><p>页面销毁一定要取消注册，要不然会照成内存泄露一般是在onDestroy或者onDestroyView方法中取消注册</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">EventBus.getDefault().unregister(<span class="keyword">this</span>);</div></pre></td></tr></table></figure>
+<h3 id="第三步-写上相应的方法"><a href="#第三步-写上相应的方法" class="headerlink" title="第三步 写上相应的方法"></a>第三步 写上相应的方法</h3><p>EventBus获取事件的方法有四个，修饰符是public，可接受有参和无参。意思就不用解释了，和名字一样。</p>
+<pre><code>1、onEvent
+2、onEventMainThread
+3、onEventBackground
+4、onEventAsync
+</code></pre><p>在我项目中我最常用的是onEventMainThread，因为我更多的是用来更新UI。</p>
+<pre><code>@Subscribe
+public void onEventMainThread(EventObject event) {
+   //TODO 你要做的事情
+}
+</code></pre><h3 id="第四步-post"><a href="#第四步-post" class="headerlink" title="第四步 post"></a>第四步 post</h3><p>在需要发送事件的地方post对象</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">EventBus.getDefault().post(EventObject);</div></pre></td></tr></table></figure>
+<p>在这里一定要解释EventObject这个东西，这是一个事件对象。接收的事件的参数必须要与发送事件事件的参数一致才能接收事件，这就好比聊QQ、微信发消息，EventObject就是你要聊天的对象。</p>
+<p>当然，有单聊和群聊，假如在多个地方注册同样的EventObject，改如何区分？<br>EventObject是一个对象，那么EventObject久可以有很多属性，例如你要在群里问某一个人一件事件，你发送了消息，大家都接收到了，但只有你问的对象才回复你。一般会怎么做，要么直接说某某啥啥的，要么直接艾特他。这样虽然所有人都看见了这个消息，但只有你问的对象才回复你。（如果这样你都不明白，那只有去补习java基础和广播部分的知识了）</p>
+<h3 id="EventBus的实际小案例"><a href="#EventBus的实际小案例" class="headerlink" title="EventBus的实际小案例"></a>EventBus的实际小案例</h3><p>代码是敲出来的，所以再多的文字说明都是苍白的。这里就来整个实际的小案例，也是我在项目中的运用方式。</p>
+<h4 id="例子（一）-更新UI"><a href="#例子（一）-更新UI" class="headerlink" title="例子（一） 更新UI"></a>例子（一） 更新UI</h4><p>主要实现类是未登录状态下登陆成功后更新UI，使用步骤和前面一样，就不在多说。</p>
+<p>事件对象，也就是一个普通的javaBean</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * &lt;p&gt;作者：江俊超 on 2016/8/10 15:01&lt;/p&gt;</div><div class="line"> * &lt;p&gt;邮箱：928692385@qq.com&lt;/p&gt;</div><div class="line"> * &lt;p&gt;更新UI的事件对象&lt;/p&gt;</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UpdateUiEvent</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span> tag;</div><div class="line">    <span class="keyword">private</span> String msf;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">UpdateUiEvent</span><span class="params">(<span class="keyword">int</span> tag, String msf)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.tag = tag;</div><div class="line">        <span class="keyword">this</span>.msf = msf;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getTag</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> tag;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setTag</span><span class="params">(<span class="keyword">int</span> tag)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.tag = tag;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getMsf</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> msf;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setMsf</span><span class="params">(String msf)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.msf = msf;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>页面非常的简单，一个是未登录页面，可以不断的打开自己，是标准的启动模式，另一个是登陆页面，输入登陆信息后就会关闭并把输入的信息发送出去。未登录页面接收到事件之后想信息显示在TextView中。</p>
+<p>未登录界面xml，很简单两个按钮，一个文本框</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">	&lt;?xml version="1.0" encoding="utf-8"?&gt;</div><div class="line">	<span class="tag">&lt;<span class="name">LinearLayout</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></span></div><div class="line">    <span class="attr">xmlns:tools</span>=<span class="string">"http://schemas.android.com/tools"</span></div><div class="line">    <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">    <span class="attr">android:orientation</span>=<span class="string">"vertical"</span></div><div class="line">    <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span></div><div class="line">    <span class="attr">android:gravity</span>=<span class="string">"center"</span></div><div class="line">    <span class="attr">tools:context</span>=<span class="string">".NoLoginActivity"</span>&gt;</div><div class="line">    <span class="tag">&lt;<span class="name">TextView</span></span></div><div class="line">        <span class="attr">android:id</span>=<span class="string">"@+id/tv_msg"</span></div><div class="line">        <span class="attr">android:layout_centerInParent</span>=<span class="string">"true"</span></div><div class="line">        <span class="attr">android:text</span>=<span class="string">"当前未登录"</span></div><div class="line">        <span class="attr">android:gravity</span>=<span class="string">"center"</span></div><div class="line">        <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">        <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span></div><div class="line">        <span class="attr">android:textSize</span>=<span class="string">"20sp"</span> /&gt;</div><div class="line">    <span class="tag">&lt;<span class="name">Button</span></span></div><div class="line">        <span class="attr">android:layout_width</span>=<span class="string">"wrap_content"</span></div><div class="line">        <span class="attr">android:text</span>=<span class="string">"去登陆"</span></div><div class="line">        <span class="attr">android:onClick</span>=<span class="string">"goLogin"</span></div><div class="line">        <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span> /&gt;</div><div class="line">    <span class="tag">&lt;<span class="name">Button</span></span></div><div class="line">        <span class="attr">android:layout_width</span>=<span class="string">"wrap_content"</span></div><div class="line">        <span class="attr">android:text</span>=<span class="string">"继续启动自己"</span></div><div class="line">        <span class="attr">android:onClick</span>=<span class="string">"startUpdateUI"</span></div><div class="line">        <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span> /&gt;</div><div class="line"><span class="tag">&lt;/<span class="name">LinearLayout</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>未登陆界面代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">NoLoginActivity</span> <span class="keyword">extends</span> <span class="title">AppCompatActivity</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> TextView mTvMsg;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</div><div class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</div><div class="line">        setContentView(R.layout.activity_no_login1);</div><div class="line">        mTvMsg = (TextView) findViewById(R.id.tv_msg);</div><div class="line">        EventBus.getDefault().register(<span class="keyword">this</span>);<span class="comment">//注册</span></div><div class="line">        mTvMsg.append(<span class="string">"  当前页面："</span>+hashCode()+<span class="string">" \n"</span>);</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">startUpdateUI</span><span class="params">(View view)</span> </span>&#123;</div><div class="line">        startActivity(<span class="keyword">new</span> Intent(<span class="keyword">this</span>, NoLoginActivity.class));</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">goLogin</span><span class="params">(View view)</span> </span>&#123;</div><div class="line">        startActivity(<span class="keyword">new</span> Intent(<span class="keyword">this</span>, LoginActivity.class));</div><div class="line">    &#125;</div><div class="line">    <span class="meta">@Subscribe</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onEventMainThread</span><span class="params">(UpdateUiEvent uiEvent)</span> </span>&#123;</div><div class="line">        mTvMsg.setText(<span class="string">"  当前页面："</span>+hashCode()+<span class="string">"\n信息："</span>+uiEvent.getMs());<span class="comment">//接收到事件  将信息设置到页面上</span></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onDestroy</span><span class="params">()</span> </span>&#123;</div><div class="line">        EventBus.getDefault().unregister(<span class="keyword">this</span>);<span class="comment">//取消注册</span></div><div class="line">        <span class="keyword">super</span>.onDestroy();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>登陆界面xml，一个按钮和一个输入框</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">	&lt;?xml version="1.0" encoding="utf-8"?&gt;</div><div class="line">	<span class="tag">&lt;<span class="name">LinearLayout</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></span></div><div class="line">    <span class="attr">xmlns:tools</span>=<span class="string">"http://schemas.android.com/tools"</span></div><div class="line">    <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">    <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span></div><div class="line">    <span class="attr">android:gravity</span>=<span class="string">"center"</span></div><div class="line">    <span class="attr">android:orientation</span>=<span class="string">"vertical"</span></div><div class="line">    <span class="attr">tools:context</span>=<span class="string">"aohanyao.com.eventbussample.LoginActivity"</span>&gt;</div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">EditText</span></span></div><div class="line">        <span class="attr">android:id</span>=<span class="string">"@+id/et_msg"</span></div><div class="line">        <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">        <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span></div><div class="line">        <span class="attr">android:hint</span>=<span class="string">"请输入登陆信息"</span> /&gt;</div><div class="line"></div><div class="line">    <span class="tag">&lt;<span class="name">Button</span></span></div><div class="line">        <span class="attr">android:layout_width</span>=<span class="string">"wrap_content"</span></div><div class="line">        <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span></div><div class="line">        <span class="attr">android:onClick</span>=<span class="string">"login"</span></div><div class="line">        <span class="attr">android:text</span>=<span class="string">"登陆"</span> /&gt;</div><div class="line"><span class="tag">&lt;/<span class="name">LinearLayout</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>登陆页面代码，点击登陆，获取输入框的值，提示一下并发送出去。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LoginActivity</span> <span class="keyword">extends</span> <span class="title">AppCompatActivity</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> EditText mEtMsg;</div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</div><div class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</div><div class="line">        setContentView(R.layout.activity_login);</div><div class="line">        mEtMsg = (EditText) findViewById(R.id.et_msg);</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">login</span><span class="params">(View view)</span> </span>&#123;</div><div class="line">        Toast.makeText(<span class="keyword">this</span>, mEtMsg.getText().toString(), Toast.LENGTH_SHORT).show();</div><div class="line">        <span class="comment">//发送事件</span></div><div class="line">        EventBus.getDefault().post(<span class="keyword">new</span> UpdateUiEvent(mEtMsg.getText().toString()));</div><div class="line">        finish();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>最终就是下面的效果了，先不断的启动当前Activity三次后登陆，完成后，按下后退键，可以看到每个页面上面都显示了输入的内容。</p>
+<p><img src="http://obh9jd33g.bkt.clouddn.com/eventBusSample.gif" alt=""></p>
+<h2 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h2><ol>
+<li>像上面的例子是一种。</li>
+<li>类似于未读信息的显示之类的，有多个页面需要显示未读信息，但是在其中一个页面读了一条，那么所有页面剩余的未读信息UI都要更改。</li>
+<li>…….好多好多</li>
+</ol>
+<p>其实说上来，需要用自定义广播的地方，都可以使用EventBus来代替。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>文采不好，敬请见谅！</p>
+<p><a href="https://github.com/aohanyao/Advanced/tree/master/code/other/EventBusSample" target="_blank" rel="external">源码地址</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/08/09/安卓开发小技巧之有些坑/" rel="next" title="安卓开发小技巧之有些坑">
+                <i class="fa fa-chevron-left"></i> 安卓开发小技巧之有些坑
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/header.png"
+               alt="江俊超" />
+          <p class="site-author-name" itemprop="name">江俊超</p>
+          <p class="site-description motion-element" itemprop="description">Android</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">7</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是EventBus"><span class="nav-number">1.</span> <span class="nav-text">什么是EventBus</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何获取EventBus"><span class="nav-number">2.</span> <span class="nav-text">如何获取EventBus</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#EventBus使用方法"><span class="nav-number">3.</span> <span class="nav-text">EventBus使用方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#第一步-注册"><span class="nav-number">3.1.</span> <span class="nav-text">第一步 注册</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第二步-取消注册"><span class="nav-number">3.2.</span> <span class="nav-text">第二步 取消注册</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第三步-写上相应的方法"><span class="nav-number">3.3.</span> <span class="nav-text">第三步 写上相应的方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#第四步-post"><span class="nav-number">3.4.</span> <span class="nav-text">第四步 post</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#EventBus的实际小案例"><span class="nav-number">3.5.</span> <span class="nav-text">EventBus的实际小案例</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#例子（一）-更新UI"><span class="nav-number">3.5.1.</span> <span class="nav-text">例子（一） 更新UI</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#应用场景"><span class="nav-number">4.</span> <span class="nav-text">应用场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">江俊超</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

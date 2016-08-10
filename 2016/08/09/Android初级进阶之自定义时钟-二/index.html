@@ -84,22 +84,31 @@
 
 
 
-<meta name="description" content="时间总是难熬。
-2014年6月参加工作，到今天已经是两年了，任然是一个初级程序员，我一直在迷茫，根本静不下心来学习。刚好，公司的项目也做的差不多了，于是乎买了两本书，强迫自己看下去。自己记下这些东西，只是为了激励自己不断的上进，不断的学习。
-到现在为止，我在三家公司工作过。第一家是在贵阳，是一个师兄创业开的公司，规模不算大，主要业务就是外包，各种各样的外包，总共呆了一年零4个月。因为我在学校主修的">
+<meta name="description" content="在上一篇Android初级进阶之自定义时钟(一)里面已经完成了时钟的静态绘制，是这个样子的：
+
+现在我们要做的是在上面的基础上继续完善，达到以下的效果。
+
+前言果然，我还是不够格，还是要继续学习，继续积累。上一篇不是已经完成了页面的绘制咯，然后需要将时分秒的指针动起来，与系统时间对应，想了老半天：没有办法计算出指针的x2和y2坐标，于是什么勾股定理，三角函数统统上了一遍，结果还是不行。最后才发现，">
 <meta property="og:type" content="article">
-<meta property="og:title" content="随记-2016年8月8日">
-<meta property="og:url" content="http://yoursite.com/2016/08/08/随记-2016年8月8日/index.html">
+<meta property="og:title" content="Android初级进阶之自定义时钟(二)">
+<meta property="og:url" content="http://yoursite.com/2016/08/09/Android初级进阶之自定义时钟-二/index.html">
 <meta property="og:site_name" content="前行者">
-<meta property="og:description" content="时间总是难熬。
-2014年6月参加工作，到今天已经是两年了，任然是一个初级程序员，我一直在迷茫，根本静不下心来学习。刚好，公司的项目也做的差不多了，于是乎买了两本书，强迫自己看下去。自己记下这些东西，只是为了激励自己不断的上进，不断的学习。
-到现在为止，我在三家公司工作过。第一家是在贵阳，是一个师兄创业开的公司，规模不算大，主要业务就是外包，各种各样的外包，总共呆了一年零4个月。因为我在学校主修的">
-<meta property="og:updated_time" content="2016-08-08T07:13:15.728Z">
+<meta property="og:description" content="在上一篇Android初级进阶之自定义时钟(一)里面已经完成了时钟的静态绘制，是这个样子的：
+
+现在我们要做的是在上面的基础上继续完善，达到以下的效果。
+
+前言果然，我还是不够格，还是要继续学习，继续积累。上一篇不是已经完成了页面的绘制咯，然后需要将时分秒的指针动起来，与系统时间对应，想了老半天：没有办法计算出指针的x2和y2坐标，于是什么勾股定理，三角函数统统上了一遍，结果还是不行。最后才发现，">
+<meta property="og:image" content="http://obh9jd33g.bkt.clouddn.com/colick_img.png">
+<meta property="og:image" content="http://obh9jd33g.bkt.clouddn.com/时钟滚动.gif">
+<meta property="og:updated_time" content="2016-08-10T01:52:42.476Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="随记-2016年8月8日">
-<meta name="twitter:description" content="时间总是难熬。
-2014年6月参加工作，到今天已经是两年了，任然是一个初级程序员，我一直在迷茫，根本静不下心来学习。刚好，公司的项目也做的差不多了，于是乎买了两本书，强迫自己看下去。自己记下这些东西，只是为了激励自己不断的上进，不断的学习。
-到现在为止，我在三家公司工作过。第一家是在贵阳，是一个师兄创业开的公司，规模不算大，主要业务就是外包，各种各样的外包，总共呆了一年零4个月。因为我在学校主修的">
+<meta name="twitter:title" content="Android初级进阶之自定义时钟(二)">
+<meta name="twitter:description" content="在上一篇Android初级进阶之自定义时钟(一)里面已经完成了时钟的静态绘制，是这个样子的：
+
+现在我们要做的是在上面的基础上继续完善，达到以下的效果。
+
+前言果然，我还是不够格，还是要继续学习，继续积累。上一篇不是已经完成了页面的绘制咯，然后需要将时分秒的指针动起来，与系统时间对应，想了老半天：没有办法计算出指针的x2和y2坐标，于是什么勾股定理，三角函数统统上了一遍，结果还是不行。最后才发现，">
+<meta name="twitter:image" content="http://obh9jd33g.bkt.clouddn.com/colick_img.png">
 
 
 
@@ -120,9 +129,9 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2016/08/08/随记-2016年8月8日/"/>
+  <link rel="canonical" href="http://yoursite.com/2016/08/09/Android初级进阶之自定义时钟-二/"/>
 
-  <title> 随记-2016年8月8日 | 前行者 </title>
+  <title> Android初级进阶之自定义时钟(二) | 前行者 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -262,7 +271,7 @@
             
             
               
-                随记-2016年8月8日
+                Android初级进阶之自定义时钟(二)
               
             
           </h1>
@@ -274,8 +283,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-08-08T14:54:14+08:00" content="2016-08-08">
-              2016-08-08
+            <time itemprop="dateCreated" datetime="2016-08-09T14:16:13+08:00" content="2016-08-09">
+              2016-08-09
             </time>
           </span>
 
@@ -302,13 +311,84 @@
       
 
       
-        <p>时间总是难熬。</p>
-<p>2014年6月参加工作，到今天已经是两年了，任然是一个初级程序员，我一直在迷茫，根本静不下心来学习。刚好，公司的项目也做的差不多了，于是乎买了两本书，强迫自己看下去。自己记下这些东西，只是为了激励自己不断的上进，不断的学习。</p>
-<p>到现在为止，我在三家公司工作过。第一家是在贵阳，是一个师兄创业开的公司，规模不算大，主要业务就是外包，各种各样的外包，总共呆了一年零4个月。因为我在学校主修的就是java，所以刚开始进去的时候主要是做java，也就是j2ee,写后台、写前端。。。，后来来了php，我就学习转做Android,边做边学，一直做各种各样的东西。月薪也仅仅能够养活自己。</p>
-<p>2015年10月，受到了高薪的诱惑，终于决定外出发展，来到了深圳。本以为以我一年多的工作经验，很快就能找到一份好的工作，然而事实是残酷的。一个月过去了，基本上都是等通知，别人说得最多的一句话就是：”一年工作经验等于无，尤其是外包”。事实上也是这样，外包这个东西，要求的就是快，不会太深入，基本上只需要复制”轮子”就可以了，这也养成了我的懒习惯，能复制就不写。</p>
-<p>就在这迷茫的日子中，我找到了我第二份工作，5K，做全栈。。。然而我只干了一个星期就跑路，能力不够啊。</p>
-<p>2015年12月4日，找到了我现在的这份工作，8K，只专注与做安卓，虽然只有我一个人，但是还是不错，快一年了。学到的东西比原来一年多学到的更多。也陷入了瓶颈，无法迈向中级工程师。所以我决定开始写博客，看书，发明轮子。</p>
-<p>写博客是为了时刻提醒自己！</p>
+        <p>在上一篇<a href="http://www.jianshu.com/p/7df63512a1b0" target="_blank" rel="external">Android初级进阶之自定义时钟(一)</a>里面已经完成了时钟的静态绘制，是这个样子的：</p>
+<p><img src="http://obh9jd33g.bkt.clouddn.com/colick_img.png" alt=""></p>
+<p>现在我们要做的是在上面的基础上继续完善，达到以下的效果。</p>
+<p><img src="http://obh9jd33g.bkt.clouddn.com/时钟滚动.gif" alt=""></p>
+<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>果然，我还是不够格，还是要继续学习，继续积累。上一篇不是已经完成了页面的绘制咯，然后需要将时分秒的指针动起来，与系统时间对应，想了老半天：没有办法计算出指针的x2和y2坐标，于是什么勾股定理，三角函数统统上了一遍，结果还是不行。最后才发现，答案就在前面，我已经写出来了</p>
+<pre><code>绘制刻度线与刻度值是最大的难点，在这里就是利用了Canvas为我们提供的rotate方法，顾名思义，就是旋转画布。我们以视图坐标系 x y 进行绘制，没绘制完成一次，旋转相应的角度就完成了刻度线的绘制。玩过PS的人应该好理解。
+</code></pre><p>明明都已经将刻度盘都画出来了，那么是不是只要将刻度盘的刻度的长度延伸，这不就是时分秒指针了吗？作孽啊！</p>
+<h3 id="获取当前的时间"><a href="#获取当前的时间" class="headerlink" title="获取当前的时间"></a>获取当前的时间</h3><pre><code>int hour = Integer.parseInt(new SimpleDateFormat(&quot;HH&quot;).format(new Date()));
+int minute = Integer.parseInt(new SimpleDateFormat(&quot;mm&quot;).format(new Date()));
+int second = Integer.parseInt(new SimpleDateFormat(&quot;ss&quot;).format(new Date()));
+</code></pre><h3 id="绘制指针"><a href="#绘制指针" class="headerlink" title="绘制指针"></a>绘制指针</h3><p>绘制指针并不难，就和刻度一样，只不过是将长度变长了而已，这里面最关键的部分是求角度，不过这没什么难度的，以下是绘制指针的代码</p>
+<pre><code>//------------------绘制时针
+ canvas.save();//保存画布
+ Paint paintHour = new Paint();
+ paintHour.setStrokeWidth(15);//宽度
+ paintHour.setColor(0xffff6600);//颜色 红色
+ paintHour.setAntiAlias(true);//抗锯齿
+ //当前小时百分比的度数  分钟在一个小时内的度数
+ float hourDegree = (hour / 12f * 360) + (minute / 60f * 15/*一个小时是15度*/);
+ int hourWidth = (int) (mCircleWidth / 2 * 0.5/*时钟半径的一半，也就是长度*/);
+ canvas.rotate(hourDegree, mCircleWidth / 2, mCircleWidth / 2);//旋转角度
+ canvas.drawLine(mCircleWidth / 2,
+         mCircleWidth / 2 - hourWidth,
+         mCircleWidth / 2,
+         mCircleWidth / 2 + offset + 10/*offset + 10 是为了突出指针，不至于难看*/,
+         paintHour);
+ //当前画布与保存的画布合并
+ canvas.restore();
+ //------------------绘制时针
+
+ //------------------绘制分针
+ canvas.save();//保存画布
+ Paint paintMinute = new Paint();
+ paintMinute.setStrokeWidth(10);
+ paintMinute.setAntiAlias(true);
+ float minuteDegree = minute / 60f * 360;
+ int minuteWidth = (int) (mCircleWidth / 2 * 0.7);
+ canvas.rotate(minuteDegree, mCircleWidth / 2, mCircleWidth / 2);
+ canvas.drawLine(mCircleWidth / 2,
+         mCircleWidth / 2 - minuteWidth,
+         mCircleWidth / 2,
+         mCircleWidth / 2 + offset * 2,
+         paintMinute);
+ //当前画布与保存的画布合并
+ canvas.restore();
+ //------------------绘制分针
+
+
+ //----------------------秒针
+ Paint paintSecond = new Paint();
+ paintSecond.setStrokeWidth(7);
+ paintSecond.setAntiAlias(true);
+ paintSecond.setColor(0xffff0000);
+ canvas.save();
+ float secondDegree = second / 60f * 360;//秒针  15秒的 度数
+ canvas.rotate(secondDegree, mCircleWidth / 2, mCircleWidth / 2);
+ int secondWidth = (int) (mCircleWidth / 2 * 0.9);//获得秒针的长度
+ canvas.drawLine(mCircleWidth / 2,
+         mCircleWidth / 2 - secondWidth,
+         mCircleWidth / 2,
+         mCircleWidth / 2 + offset * 3,
+         paintSecond);
+ //当前画布与保存的画布合并
+ canvas.restore();
+ //----------------------秒针
+
+ //---------------------绘制秒针上面的圆圈
+ canvas.save();
+ Paint pinPaintCircle = new Paint();
+ pinPaintCircle.setColor(0xffff0000);
+ pinPaintCircle.setAntiAlias(true);
+ canvas.drawCircle(mCircleWidth / 2, mCircleWidth / 2, offset, pinPaintCircle);
+ canvas.restore();
+ //---------------------绘制秒针上面的圆圈
+</code></pre><p>完了，这部分就是绘制指针，如何让指针动起来，也非常的简单，只需要绘制完成后调用postInvalidateDelayed(1000)方法延迟一秒后继续绘制就好了。就和前面的效果图一模一样啦。</p>
+<h3 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h3><p>好记性不如烂笔头，这是一句是在的话。有很多东西，尤其是像我们搞技术的，技术不用，慢慢的就会忘记的。另外我的语言水平不怎么好和技术都不怎么好，如果我哪里说得不对，及时指出，我会虚心更正。</p>
+<h3 id="其它"><a href="#其它" class="headerlink" title="其它"></a>其它</h3><p>随着慢慢的深入，我会将我的一些经验放出来的，希望共同进步。这个时钟暂时就到这里，不过我会在这个基础之上继续弄仪表盘。</p>
+<p><a href="https://github.com/aohanyao/Advanced/blob/master/code/CustomView/Dashboard/app/src/main/java/aohanyao/com/dashboard/DashboardView.java" target="_blank" rel="external">源码地址</a></p>
 
       
     </div>
@@ -334,16 +414,16 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/08/06/Android初级进阶之Shape/" rel="next" title="Android初级进阶之Shape">
-                <i class="fa fa-chevron-left"></i> Android初级进阶之Shape
+              <a href="/2016/08/09/android小技巧之不缓存的ViewPager/" rel="next" title="android小技巧之不缓存的ViewPager">
+                <i class="fa fa-chevron-left"></i> android小技巧之不缓存的ViewPager
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2016/08/08/Android初级进阶之自定义时钟-一/" rel="prev" title="Android初级进阶之自定义时钟(一)">
-                Android初级进阶之自定义时钟(一) <i class="fa fa-chevron-right"></i>
+              <a href="/2016/08/09/安卓开发小技巧之有些坑/" rel="prev" title="安卓开发小技巧之有些坑">
+                安卓开发小技巧之有些坑 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -458,7 +538,7 @@
               
             
             
-              <p class="post-toc-empty">此文章未包含目录</p>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取当前的时间"><span class="nav-number">2.</span> <span class="nav-text">获取当前的时间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#绘制指针"><span class="nav-number">3.</span> <span class="nav-text">绘制指针</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#结语"><span class="nav-number">4.</span> <span class="nav-text">结语</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其它"><span class="nav-number">5.</span> <span class="nav-text">其它</span></a></li></ol></div>
             
           </div>
         </section>
