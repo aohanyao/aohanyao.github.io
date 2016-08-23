@@ -1,0 +1,750 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="前言我发现，我 自己最难的是坚持。现在出来工作了，再也提不起在学校那种学习的干劲，每天上班等下班，得过且过。说好的努力学习，却总是被自己打败。好想痛哭。
+SafeView这是我模仿的一个效果，要不断的进步，就要不断的学习。主要实现的效果是一个转动的效果和一个3D触摸效果。请看效果图（录制的图片有点大）：
+知识点1. Canvas
+2. Paint
+3. Shader
+4. Camera(不是相机)">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android初级进阶之自定义View之SafeVeiw">
+<meta property="og:url" content="http://yoursite.com/2016/08/22/Android初级进阶之自定义View之SafeVeiw/index.html">
+<meta property="og:site_name" content="前行者">
+<meta property="og:description" content="前言我发现，我 自己最难的是坚持。现在出来工作了，再也提不起在学校那种学习的干劲，每天上班等下班，得过且过。说好的努力学习，却总是被自己打败。好想痛哭。
+SafeView这是我模仿的一个效果，要不断的进步，就要不断的学习。主要实现的效果是一个转动的效果和一个3D触摸效果。请看效果图（录制的图片有点大）：
+知识点1. Canvas
+2. Paint
+3. Shader
+4. Camera(不是相机)">
+<meta property="og:image" content="http://obh9jd33g.bkt.clouddn.com/saveViewStep5.gif">
+<meta property="og:image" content="http://obh9jd33g.bkt.clouddn.com/saveViewStep1.png">
+<meta property="og:image" content="http://obh9jd33g.bkt.clouddn.com/saveViewStep2.png">
+<meta property="og:image" content="http://obh9jd33g.bkt.clouddn.com/saveViewStep3.png">
+<meta property="og:image" content="http://obh9jd33g.bkt.clouddn.com/saveViewStep4.gif">
+<meta property="og:updated_time" content="2016-08-23T06:52:38.119Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android初级进阶之自定义View之SafeVeiw">
+<meta name="twitter:description" content="前言我发现，我 自己最难的是坚持。现在出来工作了，再也提不起在学校那种学习的干劲，每天上班等下班，得过且过。说好的努力学习，却总是被自己打败。好想痛哭。
+SafeView这是我模仿的一个效果，要不断的进步，就要不断的学习。主要实现的效果是一个转动的效果和一个3D触摸效果。请看效果图（录制的图片有点大）：
+知识点1. Canvas
+2. Paint
+3. Shader
+4. Camera(不是相机)">
+<meta name="twitter:image" content="http://obh9jd33g.bkt.clouddn.com/saveViewStep5.gif">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '江俊超'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/08/22/Android初级进阶之自定义View之SafeVeiw/"/>
+
+  <title> Android初级进阶之自定义View之SafeVeiw | 前行者 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">前行者</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">不断前行，从未停滞</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Android初级进阶之自定义View之SafeVeiw
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-08-22T14:25:03+08:00" content="2016-08-22">
+              2016-08-22
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h4><p>我发现，我 自己最难的是坚持。现在出来工作了，再也提不起在学校那种学习的干劲，每天上班等下班，得过且过。说好的努力学习，却总是被自己打败。好想痛哭。</p>
+<h3 id="SafeView"><a href="#SafeView" class="headerlink" title="SafeView"></a>SafeView</h3><p>这是我模仿的一个效果，要不断的进步，就要不断的学习。主要实现的效果是一个转动的效果和一个3D触摸效果。请看效果图（录制的图片有点大）：<br><img src="http://obh9jd33g.bkt.clouddn.com/saveViewStep5.gif" alt="效果图"></p>
+<h3 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h3><pre><code>1. Canvas
+2. Paint
+3. Shader
+4. Camera(不是相机)
+5. Animator
+</code></pre><h3 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h3><p>整个View看上去是有四个圆组成，内中心的圆对边上有一个小圆，圆上面还有小尾巴。其实主要的原理是使用ValueAnimator来发散一个圆周的值，也就是360度，然后每次发散后旋转画布就能得到上面的效果。</p>
+<h3 id="技术点"><a href="#技术点" class="headerlink" title="技术点"></a>技术点</h3><ol>
+<li>android.graphics.Camera是Android官方提供的3D效果组件，使用起来十分的简单，关键在于理解其中的x,y,z轴。（有空再写一篇Camera的使用）</li>
+<li><p>Sharder 阴影渲染</p>
+<ol>
+<li>本View中主要使用了LinearGradient和RadialGradient。<ol>
+<li>LinearGradient为线性渐变，在这里主要是用来画小圆的尾巴。</li>
+<li>RadialGradient为径向渐变，从圆心向外四周扩散，在这里是用来画中心圆的效果。</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Animator 自3.0后推出的属性动画，本文主要使用ValueAnimator。</p>
+<h3 id="CODE"><a href="#CODE" class="headerlink" title="CODE"></a>CODE</h3><h4 id="1-初始化-amp-amp-Measure"><a href="#1-初始化-amp-amp-Measure" class="headerlink" title="1.初始化 &amp;&amp; Measure"></a>1.初始化 &amp;&amp; Measure</h4><p>将一些全局的值在构方法中进行初始化并且测量View的宽高等。</p>
+</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">mPaint = <span class="keyword">new</span> Paint();</div><div class="line">    mPaint.setAntiAlias(<span class="keyword">true</span>);</div><div class="line">    mPaint.setStrokeCap(Paint.Cap.ROUND);<span class="comment">// 圆角笔触</span></div><div class="line">    mLeftLinearGradient = <span class="keyword">new</span> LinearGradient(<span class="number">0</span>, <span class="number">0</span>, mCy - OFFSET, mCy - OFFSET, <span class="number">0xddffffff</span>, <span class="number">0x00000000</span>, Shader.TileMode.CLAMP);<span class="comment">//左边的尾巴</span></div><div class="line">    mRightLinearGradient = <span class="keyword">new</span> LinearGradient(mCy - OFFSET, mCy / <span class="number">2</span>, <span class="number">0</span>, mCy / <span class="number">2</span>, <span class="number">0xddffffff</span>, <span class="number">0x00000000</span>, Shader.TileMode.CLAMP);<span class="comment">//右边的尾巴</span></div></pre></td></tr></table></figure>
+<h4 id="2-绘制所有的背景圆"><a href="#2-绘制所有的背景圆" class="headerlink" title="2.绘制所有的背景圆"></a>2.绘制所有的背景圆</h4><p>圆的颜色是从中心开始不断的淡化的，其实这只要更改透明度就可以完成这样的效果</p>
+<pre><code>/**
+ * @param canvas
+ * @param radius 直径
+ * @param angle  当前角度
+ */
+private void canvasCircle(Canvas canvas, int radius, float angle) {
+    float percentage = angle / 360f;//当前角度百分比
+    mPaint.setColor(0xddffffff);
+    mPaint.setStyle(Paint.Style.STROKE);
+    mPaint.setStrokeWidth(1.5f);
+    //绘制中心圆圈
+    canvas.drawCircle(radius, radius, radius - OFFSET, mPaint);
+    mPaint.setStyle(Paint.Style.FILL);
+    mPaint.setColor(0x22ffffff);
+
+
+    if (aninatopValue &gt;= 90) {
+        //绘制第二圆圈
+        canvas.drawCircle(radius, radius, radius - OFFSET + 40 * percentage, mPaint);
+    }
+    mPaint.setColor(0x11ffffff);
+    if (aninatopValue &gt;= 180) {
+        //绘制第三圆圈
+        canvas.drawCircle(radius, radius, radius - OFFSET + 80 * percentage, mPaint);
+    }
+    if (aninatopValue &gt;= 270) {
+        //绘制第四圆圈
+        canvas.drawCircle(radius, radius, radius - OFFSET + 120 * percentage, mPaint);
+    }
+    if (aninatopValue &lt;= 90) {// 初始状态下绘制所有的圆圈
+        mPaint.setColor(0x22ffffff);
+        canvas.drawCircle(radius, radius, radius - OFFSET + 40, mPaint);
+        mPaint.setColor(0x11ffffff);
+        canvas.drawCircle(radius, radius, radius - OFFSET + 80, mPaint);
+        canvas.drawCircle(radius, radius, radius - OFFSET + 120, mPaint);
+    }
+    mPaint.setColor(0xff1782dd);//绘制中心圆为背景颜色
+    canvas.drawCircle(radius, radius, radius - OFFSET, mPaint);
+    mPaint.setColor(0x55ffffff);
+    //渲染 得到中心的 凹凸效果
+    RadialGradient radialGradient = new RadialGradient(radius, radius, radius - OFFSET, new int[]{0x00000000, 0xffffffff}, null, Shader.TileMode.CLAMP);
+    mPaint.setShader(radialGradient);
+    canvas.drawCircle(radius, radius, radius - OFFSET, mPaint);
+}
+</code></pre><p>效果图：</p>
+<p><img src="http://obh9jd33g.bkt.clouddn.com/saveViewStep1.png" alt="绘制完所有的圆"></p>
+<h4 id="3-绘制中间的文字"><a href="#3-绘制中间的文字" class="headerlink" title="3.绘制中间的文字"></a>3.绘制中间的文字</h4><pre><code>/**
+ * //绘制文字
+ *
+ * @param canvas
+ * @param radius
+ */
+private void canvasText(Canvas canvas, int radius) {
+    mPaint.setShader(null);//文字颜色
+    mPaint.setColor(0x88ffffff);//转换字体
+    mPaint.setTextSize(DensityUtils.sp2px(getContext(), 14));
+    mPaint.setStrokeWidth(2);
+    mPaint.setStyle(Paint.Style.STROKE);
+    String safeText = &quot;已防御次数&quot;;
+    canvas.drawText(safeText, radius - mPaint.measureText(safeText) / 2, (radius - mPaint.measureText(String.valueOf(safeText)) / 2), mPaint);
+    mPaint.setStyle(Paint.Style.FILL);
+    mPaint.setColor(0xffffffff);
+    mPaint.setTextSize(DensityUtils.sp2px(getContext(), 30));
+    mPaint.setStrokeWidth(2);
+    canvas.drawText(String.valueOf(safeCount), radius - mPaint.measureText(String.valueOf(safeCount)) / 2, radius + radius / 4, mPaint);
+}
+</code></pre><p><img src="http://obh9jd33g.bkt.clouddn.com/saveViewStep2.png" alt="绘制完所有的圆"></p>
+<h4 id="4-绘制左右两个圆点并旋转"><a href="#4-绘制左右两个圆点并旋转" class="headerlink" title="4.绘制左右两个圆点并旋转"></a>4.绘制左右两个圆点并旋转</h4><p>到这里，基本绘制就已经完成了，只要加上角度的计算和动画部分，这个View就能够动起来了。</p>
+<pre><code>/**
+ * 绘制旋转部分
+ */
+private void canvasRotate(Canvas canvas, int radius, float angle) {
+    //旋转画布
+    canvas.rotate(angle, radius, radius);
+    //移动坐标到中心
+    canvas.translate(radius, radius);
+    mPaint.setShader(null);
+    //左边的圆
+    mPaint.setColor(Color.WHITE);
+    mPaint.setStyle(Paint.Style.FILL);
+    mPaint.setStrokeWidth(5);
+    canvas.drawCircle(-radius + OFFSET, 0, 10, mPaint);
+    //右边的圆
+    canvas.drawCircle(radius - OFFSET, 0, 10, mPaint);
+    mPaint.setStyle(Paint.Style.STROKE);
+    mPaint.setStrokeWidth(8);
+    //绘制坐标的圆的尾巴
+    RectF mRectF = new RectF(-radius + OFFSET, -radius + OFFSET, radius - OFFSET, radius - OFFSET);
+    mPaint.setShader(mRightLinearGradient);
+    canvas.drawArc(mRectF, 15, 180 - 15, false, mPaint);
+    mPaint.setShader(mLeftLinearGradient);
+    canvas.drawArc(mRectF, 180 + 15, 180 - 15, false, mPaint);
+    //合并画布
+    canvas.restore();
+}
+</code></pre><p><img src="http://obh9jd33g.bkt.clouddn.com/saveViewStep3.png" alt="绘制完所有的圆"></p>
+<h4 id="5-动画与角度"><a href="#5-动画与角度" class="headerlink" title="5.动画与角度"></a>5.动画与角度</h4><pre><code>/**
+ * 开始
+ */
+private void startLoopAnimator() {
+    //发散350度
+    motionAnimator = ValueAnimator.ofFloat(360f).setDuration(1500);
+    //线性差值器
+    motionAnimator.setInterpolator(new LinearInterpolator());
+    //永远循环
+    motionAnimator.setRepeatCount(ValueAnimator.INFINITE);
+    motionAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+        @Override
+        public void onAnimationUpdate(ValueAnimator animation) {
+            safeCount++;
+            aninatopValue = (float) animation.getAnimatedValue();
+            postInvalidate();
+        }
+    });
+    motionAnimator.start();
+}
+</code></pre><p><img src="http://obh9jd33g.bkt.clouddn.com/saveViewStep4.gif" alt="绘制完所有的圆"></p>
+<h4 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h4><p><a href="https://github.com/aohanyao/Advanced/blob/master/code/CustomView/CustLoding/app/src/main/java/aohanyao/com/custloding/ui/SafeView.java" target="_blank" rel="external">源码</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/08/10/Android小技巧之来不及解释了快上车-EventBus3/" rel="next" title="android小技巧之来不及解释了快上车--EventBus3">
+                <i class="fa fa-chevron-left"></i> android小技巧之来不及解释了快上车--EventBus3
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/08/22/Android小技巧之最快速简单的悬浮TAB/" rel="prev" title="Android小技巧之最快速简单的悬浮TAB">
+                Android小技巧之最快速简单的悬浮TAB <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/header.png"
+               alt="江俊超" />
+          <p class="site-author-name" itemprop="name">江俊超</p>
+          <p class="site-description motion-element" itemprop="description">Android</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">9</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SafeView"><span class="nav-number"></span> <span class="nav-text">SafeView</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#知识点"><span class="nav-number"></span> <span class="nav-text">知识点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分析"><span class="nav-number"></span> <span class="nav-text">分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#技术点"><span class="nav-number"></span> <span class="nav-text">技术点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CODE"><span class="nav-number"></span> <span class="nav-text">CODE</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-初始化-amp-amp-Measure"><span class="nav-number">1.</span> <span class="nav-text">1.初始化 && Measure</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-绘制所有的背景圆"><span class="nav-number">2.</span> <span class="nav-text">2.绘制所有的背景圆</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-绘制中间的文字"><span class="nav-number">3.</span> <span class="nav-text">3.绘制中间的文字</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-绘制左右两个圆点并旋转"><span class="nav-number">4.</span> <span class="nav-text">4.绘制左右两个圆点并旋转</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-动画与角度"><span class="nav-number">5.</span> <span class="nav-text">5.动画与角度</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#最后"><span class="nav-number">6.</span> <span class="nav-text">最后</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">江俊超</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
