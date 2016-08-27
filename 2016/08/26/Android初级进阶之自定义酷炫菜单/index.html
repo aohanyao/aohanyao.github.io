@@ -1,0 +1,818 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="效果图
+前言最近一直在学习自定义控件，发现自己依然是那么的渣渣。上面的UI效果来自这个网站，果然，交互设计的效果与实际做出来的效果还是相差很大啊。
+分析整个效果实现起来还是十分的简单，分析一下：
+
+中间是一个圆用drawCircle()就可以画出来。
+圆中心是两条线：drawLine()
+后边的背景是一个圆角矩形：drawRoundRect()
+动画效果使用ValueAnimator发散1–0之间">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android初级进阶之自定义酷炫菜单">
+<meta property="og:url" content="http://yoursite.com/2016/08/26/Android初级进阶之自定义酷炫菜单/index.html">
+<meta property="og:site_name" content="前行者">
+<meta property="og:description" content="效果图
+前言最近一直在学习自定义控件，发现自己依然是那么的渣渣。上面的UI效果来自这个网站，果然，交互设计的效果与实际做出来的效果还是相差很大啊。
+分析整个效果实现起来还是十分的简单，分析一下：
+
+中间是一个圆用drawCircle()就可以画出来。
+圆中心是两条线：drawLine()
+后边的背景是一个圆角矩形：drawRoundRect()
+动画效果使用ValueAnimator发散1–0之间">
+<meta property="og:image" content="http://obh9jd33g.bkt.clouddn.com/酷炫菜单.gif">
+<meta property="og:image" content="http://obh9jd33g.bkt.clouddn.com/中心初始状态.png">
+<meta property="og:image" content="http://obh9jd33g.bkt.clouddn.com/中心交叉状态.png">
+<meta property="og:image" content="http://obh9jd33g.bkt.clouddn.com/展开初始状态.png">
+<meta property="og:image" content="http://obh9jd33g.bkt.clouddn.com/酷炫菜单2.gif">
+<meta property="og:image" content="http://obh9jd33g.bkt.clouddn.com/酷炫菜单3.gif">
+<meta property="og:updated_time" content="2016-08-27T07:35:55.828Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android初级进阶之自定义酷炫菜单">
+<meta name="twitter:description" content="效果图
+前言最近一直在学习自定义控件，发现自己依然是那么的渣渣。上面的UI效果来自这个网站，果然，交互设计的效果与实际做出来的效果还是相差很大啊。
+分析整个效果实现起来还是十分的简单，分析一下：
+
+中间是一个圆用drawCircle()就可以画出来。
+圆中心是两条线：drawLine()
+后边的背景是一个圆角矩形：drawRoundRect()
+动画效果使用ValueAnimator发散1–0之间">
+<meta name="twitter:image" content="http://obh9jd33g.bkt.clouddn.com/酷炫菜单.gif">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '江俊超'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/08/26/Android初级进阶之自定义酷炫菜单/"/>
+
+  <title> Android初级进阶之自定义酷炫菜单 | 前行者 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">前行者</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">不断前行，从未停滞</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Android初级进阶之自定义酷炫菜单
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-08-26T15:26:36+08:00" content="2016-08-26">
+              2016-08-26
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="效果图"><a href="#效果图" class="headerlink" title="效果图"></a>效果图</h2><p><img src="http://obh9jd33g.bkt.clouddn.com/酷炫菜单.gif" alt=""></p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近一直在学习自定义控件，发现自己依然是那么的渣渣。上面的UI效果来自<a href="https://material.uplabs.com/posts/alignment-fab-bar" target="_blank" rel="external">这个网站</a>，果然，交互设计的效果与实际做出来的效果还是相差很大啊。</p>
+<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>整个效果实现起来还是十分的简单，分析一下：</p>
+<ol>
+<li>中间是一个圆用drawCircle()就可以画出来。</li>
+<li>圆中心是两条线：drawLine()</li>
+<li>后边的背景是一个圆角矩形：drawRoundRect()</li>
+<li>动画效果使用ValueAnimator发散1–0之间的数值，不断的更改长度和坐标即可完成。</li>
+<li>不想吐槽那四个小正方形。</li>
+</ol>
+<h2 id="开始编码"><a href="#开始编码" class="headerlink" title="开始编码"></a>开始编码</h2><h3 id="Step-1"><a href="#Step-1" class="headerlink" title="Step 1"></a>Step 1</h3><p>继承自原生的View，重写构造方法，在构造方法中初始化画笔等操作</p>
+<pre><code> /**
+ * 初始化画笔等
+ */
+private void initSomeThing() {
+    mPaint = new Paint();
+    mPaint.setAntiAlias(true);
+    mPaint.setStrokeCap(Paint.Cap.ROUND);
+    mPaint.setStrokeWidth(1);
+}
+</code></pre><h3 id="Step-2-Measure（测量）"><a href="#Step-2-Measure（测量）" class="headerlink" title="Step 2 Measure（测量）"></a>Step 2 Measure（测量）</h3><p>测量View的宽高，支持Padding，wrap_content等</p>
+<pre><code> @Override
+protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+    int measureWidth = measureSize(widthMeasureSpec, getWindowMsg(getContext())[0] - getPaddingLeft() - getPaddingRight() - mCenterMenuOffset);
+    int measureHeight = measureSize(heightMeasureSpec, dp2px(getContext(), 90)) + getPaddingBottom() + getPaddingTop();
+    setMeasuredDimension(measureWidth, measureHeight);
+}
+</code></pre><p>测量封装方法</p>
+<pre><code>/**
+ * 测量宽高 模式
+ *
+ * @param measureSpec
+ * @return
+ */
+private  int measureSize(int measureSpec,int defaultSize) {
+    int result;
+    int size = MeasureSpec.getSize(measureSpec);
+    int mode = MeasureSpec.getMode(measureSpec);
+    if (mode == MeasureSpec.EXACTLY) {
+        result = size;
+    } else {
+        result = defaultSize;
+        if (mode == MeasureSpec.AT_MOST) {
+            result = Math.min(result, size);
+        }
+    }
+    return result;
+}
+</code></pre><p>获取屏幕宽高</p>
+<pre><code> /**
+ * 获取屏幕宽高
+ *
+ * @return wh[1] 屏幕高度
+ */
+private   int[] getWindowMsg(Context context) {
+    int[] wh = new int[2];
+    WindowManager wm = (WindowManager) context
+            .getSystemService(Context.WINDOW_SERVICE);
+    wh[0] = wm.getDefaultDisplay().getWidth();
+    wh[1] = wm.getDefaultDisplay().getHeight();
+    //Log.d(&quot;vivi&quot;, &quot;屏幕宽 =&quot; + wh[0]);
+    //Log.d(&quot;vivi&quot;, &quot;屏幕高 =&quot; + wh[1]);
+    return wh;
+}
+</code></pre><p>dp2px</p>
+<pre><code>/**
+ * dp转px
+ *
+ * @param context
+ * @param dpVal
+ * @return
+ */
+private  int dp2px(Context context, float dpVal) {
+    return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+            dpVal, context.getResources().getDisplayMetrics());
+}
+</code></pre><h3 id="Step-3-在onSizeChanged中初始化宽高的一些属性"><a href="#Step-3-在onSizeChanged中初始化宽高的一些属性" class="headerlink" title="Step 3 在onSizeChanged中初始化宽高的一些属性"></a>Step 3 在onSizeChanged中初始化宽高的一些属性</h3><pre><code>@Override
+protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+    super.onSizeChanged(w, h, oldw, oldh);
+    mWidth = w;//宽度
+    mHeight = h;//高度
+    mCenterMenuOffset = (int) (mHeight * 0.3);//中间 圆形菜单的上下偏移量
+    mMenuBackgroundOffset = (int) ((mHeight * 0.5) / 2); //紫色圆角矩形的上下偏移量
+    mCenterMenuRadius = (mHeight - mCenterMenuOffset) / 2;//中间圆形的半径
+    mForkLenght = (int) (mCenterMenuRadius * 0.4);//中间两个线的长度
+
+    //得到中心菜单的矩阵 start
+    int l = mWidth / 2 - mCenterMenuRadius;
+    int t = mCenterMenuOffset / 2;
+    int b = mHeight - mCenterMenuOffset / 2;
+    int r = mWidth / 2 + mCenterMenuRadius;
+    mCenterMenuRect = new Rect(l, t, r, b);//中心的圆的矩阵，用来响应点击事件的
+    //得到中心菜单的矩阵 end
+}
+</code></pre><h3 id="Step-4-画中心的圆"><a href="#Step-4-画中心的圆" class="headerlink" title="Step 4 画中心的圆"></a>Step 4 画中心的圆</h3><p>画个圆，没什么难度，偏移量，半径都在onSizeChanged中初始化完成了。这里要给圆加上阴影</p>
+<pre><code>//画中心的圆 start
+  mPaint.setShadowLayer(7, 4, 5, 0xff999999);//设置阴影图层
+  this.setLayerType(View.LAYER_TYPE_SOFTWARE, mPaint);
+  mPaint.setColor(mCenterMenuColor);
+  canvas.drawCircle(mWidth / 2, mHeight / 2, mCenterMenuRadius, mPaint);
+</code></pre><h3 id="Step-5-圆中心的两根线"><a href="#Step-5-圆中心的两根线" class="headerlink" title="Step 5 圆中心的两根线"></a>Step 5 圆中心的两根线</h3><p>仔细看效果图，两个线上边的点是相同的，只是在动画的时候更改X轴的坐标就可以从 ^ 变成X了。首先要将画布的坐标点移到中心，这样更方便绘制这两条线。</p>
+<pre><code>//圆形菜单中的 叉叉
+    canvas.translate(mWidth / 2, mHeight / 2);//移动坐标点
+    mPaint.setColor(Color.WHITE);
+    mPaint.setStrokeWidth(10);
+    canvas.drawLine(0, -mForkLenght, -mForkLenght, mForkLenght, mPaint);
+    canvas.drawLine(0, -mForkLenght, mForkLenght, mForkLenght, mPaint);
+</code></pre><p>效果就出来啦：</p>
+<p><img src="http://obh9jd33g.bkt.clouddn.com/中心初始状态.png" alt=""></p>
+<p>只要将左边的线的坐标更改为负数，右边更改为正数，就变成了X了</p>
+<pre><code>canvas.drawLine(mForkLenght, -mForkLenght, -mForkLenght, mForkLenght, mPaint);
+canvas.drawLine(1mForkLenght, -mForkLenght, mForkLenght, mForkLenght, mPaint);
+</code></pre><p><img src="http://obh9jd33g.bkt.clouddn.com/中心交叉状态.png" alt=""></p>
+<h3 id="Step-6-绘制背景矩形"><a href="#Step-6-绘制背景矩形" class="headerlink" title="Step 6 绘制背景矩形"></a>Step 6 绘制背景矩形</h3><p>绘制静态的矩形，也就是整个展开的效果</p>
+<pre><code> // 菜单背景 start
+int left = mWidth / 2;//100
+float nowWidth = (left - mMenuBackgroundOffset / 2);
+RectF mMenuRectF = new RectF(left - nowWidth, mMenuBackgroundOffset, left + nowWidth, mHeight - mMenuBackgroundOffset);
+mPaint.setColor(mMenuBackgroundColor);
+canvas.drawRoundRect(mMenuRectF, mCenterMenuRadius, mCenterMenuRadius, mPaint);
+</code></pre><p>效果出来了有没有？</p>
+<p><img src="http://obh9jd33g.bkt.clouddn.com/展开初始状态.png" alt="展开初始状态"></p>
+<h3 id="Step-7-为中心的按钮响应点击事件"><a href="#Step-7-为中心的按钮响应点击事件" class="headerlink" title="Step 7 为中心的按钮响应点击事件"></a>Step 7 为中心的按钮响应点击事件</h3><p>自定义原生View应该如何响应点击事件呢？其实非常的简单，在onSizeChanged里面计算出了中心圆的矩形区域mCenterMenuRect。而Rect提供了一个方法contains(x, y)来判断xy坐标是不是在这个矩形当中，于是这就简单了，只需要重写onTouch方法判断xy坐标就好。</p>
+<pre><code>  @Override
+public boolean onTouchEvent(MotionEvent event) {
+    int x = (int) event.getX();//获得点击的坐标
+    int y = (int) event.getY();
+    switch (event.getAction()) {
+        case MotionEvent.ACTION_DOWN:
+            break;
+        case MotionEvent.ACTION_UP:
+            if (mCenterMenuRect.contains(x, y)) {//包含 打开菜单获关闭
+                openOrClose();
+            }
+            break;
+    }
+    return true;
+}
+
+/**
+ * 打开或关闭
+ */
+public void openOrClose() {
+    if (isOpen) {
+        startAnimator(1, 0);
+    } else {
+        startAnimator(0, 1);
+    }
+    isOpen = !isOpen;
+}
+</code></pre><h3 id="Step-8-增加动画"><a href="#Step-8-增加动画" class="headerlink" title="Step 8 增加动画"></a>Step 8 增加动画</h3><p>使用ValueAnimator来发散1–0之间的数值，相当于百分比，然后不断的postInvalidate达到效果</p>
+<pre><code>/**
+ * 开启启动动画
+ *
+ * @param from
+ * @param end
+ */
+private void startAnimator(final int from, int end) {
+    if (mAnimatorBackground != null &amp;&amp; mAnimatorBackground.isRunning()) {
+        mAnimatorBackground.cancel();
+        mAnimatorBackground = null;
+    }
+    mAnimatorBackground = ValueAnimator.ofFloat(from, end).setDuration(500);
+    mAnimatorBackground.setInterpolator(new OvershootInterpolator());
+    mAnimatorBackground.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+        @Override
+        public void onAnimationUpdate(ValueAnimator animation) {
+            mPreValue = (float) animation.getAnimatedValue();
+            postInvalidate();
+        }
+    });
+    mAnimatorBackground.start();
+}
+</code></pre><p>onDraw方法代码</p>
+<pre><code> @Override
+protected void onDraw(Canvas canvas) {
+    super.onDraw(canvas);
+    // 菜单背景 start
+    int left = mWidth / 2;//100
+    float nowWidth = (left - mMenuBackgroundOffset / 2) * mPreValue;
+    RectF mMenuRectF = new RectF(left - nowWidth, mMenuBackgroundOffset, left + nowWidth, mHeight - mMenuBackgroundOffset);
+    mPaint.setColor(mMenuBackgroundColor);
+    canvas.drawRoundRect(mMenuRectF, mCenterMenuRadius, mCenterMenuRadius, mPaint);
+    // 菜单背景 end
+    //画中心的圆 start
+    mPaint.setShadowLayer(7, 4, 5, 0xff999999);//设置阴影图层
+    this.setLayerType(View.LAYER_TYPE_SOFTWARE, mPaint);
+    mPaint.setColor(mCenterMenuColor);
+    canvas.drawCircle(mWidth / 2, mHeight / 2, mCenterMenuRadius, mPaint);
+    mPaint.setShadowLayer(0, 0, 0, Color.TRANSPARENT);
+    // canvas.rotate(360 * mPreValue, mWidth / 2, mHeight / 2);
+
+    //画中心的圆 end
+    //圆形菜单中的 叉叉
+    canvas.translate(mWidth / 2, mHeight / 2);//移动坐标点
+    mPaint.setColor(Color.WHITE);
+    mPaint.setStrokeWidth(10);
+    canvas.drawLine(mForkLenght * mPreValue, -mForkLenght, -mForkLenght, mForkLenght, mPaint);
+    canvas.drawLine(-mForkLenght * mPreValue, -mForkLenght, mForkLenght, mForkLenght, mPaint);
+}
+</code></pre><p>效果如下：</p>
+<p><img src="http://obh9jd33g.bkt.clouddn.com/酷炫菜单2.gif" alt="酷炫菜单2"></p>
+<pre><code>// canvas.rotate(360 * mPreValue, mWidth / 2, 
+</code></pre><p>这句注释打开后就会有一个旋转的效果，如下：</p>
+<p><img src="http://obh9jd33g.bkt.clouddn.com/酷炫菜单3.gif" alt="酷炫菜单3"></p>
+<p>##最后<br>OK，这个效果基本上到这里也就完成了，不要问我为什么没有画矩形，我只是想偷懒，最后会附上源码的地址，自己研究去，也就是计算矩形的位置加上动画而已。</p>
+<p>自己造轮子，才是最快的进步方式。</p>
+<p><a href="https://github.com/aohanyao/Advanced/tree/master/code/CustomView/CoolMenu" target="_blank" rel="external">源码</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/08/25/Android小技巧之无限循环的ViewPager/" rel="next" title="Android小技巧之无限循环的ViewPager">
+                <i class="fa fa-chevron-left"></i> Android小技巧之无限循环的ViewPager
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/header.png"
+               alt="江俊超" />
+          <p class="site-author-name" itemprop="name">江俊超</p>
+          <p class="site-description motion-element" itemprop="description">Android</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">11</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#效果图"><span class="nav-number">1.</span> <span class="nav-text">效果图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">2.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分析"><span class="nav-number">3.</span> <span class="nav-text">分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#开始编码"><span class="nav-number">4.</span> <span class="nav-text">开始编码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Step-1"><span class="nav-number">4.1.</span> <span class="nav-text">Step 1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Step-2-Measure（测量）"><span class="nav-number">4.2.</span> <span class="nav-text">Step 2 Measure（测量）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Step-3-在onSizeChanged中初始化宽高的一些属性"><span class="nav-number">4.3.</span> <span class="nav-text">Step 3 在onSizeChanged中初始化宽高的一些属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Step-4-画中心的圆"><span class="nav-number">4.4.</span> <span class="nav-text">Step 4 画中心的圆</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Step-5-圆中心的两根线"><span class="nav-number">4.5.</span> <span class="nav-text">Step 5 圆中心的两根线</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Step-6-绘制背景矩形"><span class="nav-number">4.6.</span> <span class="nav-text">Step 6 绘制背景矩形</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Step-7-为中心的按钮响应点击事件"><span class="nav-number">4.7.</span> <span class="nav-text">Step 7 为中心的按钮响应点击事件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Step-8-增加动画"><span class="nav-number">4.8.</span> <span class="nav-text">Step 8 增加动画</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">江俊超</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
