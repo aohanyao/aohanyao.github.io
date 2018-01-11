@@ -89,7 +89,7 @@ EventBus，就按照名字翻译来说”事件公共汽车”,官方的说法�
 <meta property="og:type" content="article">
 <meta property="og:title" content="android小技巧之来不及解释了快上车--EventBus3">
 <meta property="og:url" content="http://yoursite.com/2016/08/10/Android小技巧之来不及解释了快上车-EventBus3/index.html">
-<meta property="og:site_name" content="前行者">
+<meta property="og:site_name" content="Forward">
 <meta property="og:description" content="什么是EventBus先附上EventBus的git地址
 EventBus，就按照名字翻译来说”事件公共汽车”,官方的说法是”EventBus is a publish/subscribe event bus optimized for Android.”也就是”eventbus是Android发布/订阅事件总线”。或许不太好理解，但是在我现在做的这个项目中，我已经用EventBus来取代广播和h">
 <meta property="og:image" content="https://raw.githubusercontent.com/greenrobot/EventBus/master/EventBus-Publish-Subscribe.png">
@@ -112,7 +112,7 @@ EventBus，就按照名字翻译来说”事件公共汽车”,官方的说法�
     motion: true,
     duoshuo: {
       userId: 0,
-      author: '江俊超'
+      author: 'aohanyao'
     }
   };
 </script>
@@ -122,7 +122,7 @@ EventBus，就按照名字翻译来说”事件公共汽车”,官方的说法�
 
   <link rel="canonical" href="http://yoursite.com/2016/08/10/Android小技巧之来不及解释了快上车-EventBus3/"/>
 
-  <title> android小技巧之来不及解释了快上车--EventBus3 | 前行者 </title>
+  <title> android小技巧之来不及解释了快上车--EventBus3 | Forward </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -153,7 +153,7 @@ EventBus，就按照名字翻译来说”事件公共汽车”,官方的说法�
   <div class="custom-logo-site-title">
     <a href="/"  class="brand" rel="start">
       <span class="logo-line-before"><i></i></span>
-      <span class="site-title">前行者</span>
+      <span class="site-title">Forward</span>
       <span class="logo-line-after"><i></i></span>
     </a>
   </div>
@@ -335,7 +335,7 @@ public void onEventMainThread(EventObject event) {
 <h3 id="EventBus的实际小案例"><a href="#EventBus的实际小案例" class="headerlink" title="EventBus的实际小案例"></a>EventBus的实际小案例</h3><p>代码是敲出来的，所以再多的文字说明都是苍白的。这里就来整个实际的小案例，也是我在项目中的运用方式。</p>
 <h4 id="例子（一）-更新UI"><a href="#例子（一）-更新UI" class="headerlink" title="例子（一） 更新UI"></a>例子（一） 更新UI</h4><p>主要实现类是未登录状态下登陆成功后更新UI，使用步骤和前面一样，就不在多说。</p>
 <p>事件对象，也就是一个普通的javaBean</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * &lt;p&gt;作者：江俊超 on 2016/8/10 15:01&lt;/p&gt;</div><div class="line"> * &lt;p&gt;邮箱：928692385@qq.com&lt;/p&gt;</div><div class="line"> * &lt;p&gt;更新UI的事件对象&lt;/p&gt;</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UpdateUiEvent</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> String ms;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">UpdateUiEvent</span><span class="params">(String msf)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.ms = msf;</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getMs</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> ms;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setMs</span><span class="params">(String ms)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.ms = ms;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * &lt;p&gt;作者：aohanyao on 2016/8/10 15:01&lt;/p&gt;</div><div class="line"> * &lt;p&gt;邮箱：928692385@qq.com&lt;/p&gt;</div><div class="line"> * &lt;p&gt;更新UI的事件对象&lt;/p&gt;</div><div class="line"> */</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UpdateUiEvent</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> String ms;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">UpdateUiEvent</span><span class="params">(String msf)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.ms = msf;</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getMs</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> ms;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setMs</span><span class="params">(String ms)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.ms = ms;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>页面非常的简单，一个是未登录页面，可以不断的打开自己，是标准的启动模式，另一个是登陆页面，输入登陆信息后就会关闭并把输入的信息发送出去。未登录页面接收到事件之后想信息显示在TextView中。</p>
 <p>未登录界面xml，很简单两个按钮，一个文本框</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">	&lt;?xml version="1.0" encoding="utf-8"?&gt;</div><div class="line">	<span class="tag">&lt;<span class="name">LinearLayout</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></span></div><div class="line">    <span class="attr">xmlns:tools</span>=<span class="string">"http://schemas.android.com/tools"</span></div><div class="line">    <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">    <span class="attr">android:orientation</span>=<span class="string">"vertical"</span></div><div class="line">    <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span></div><div class="line">    <span class="attr">android:gravity</span>=<span class="string">"center"</span></div><div class="line">    <span class="attr">tools:context</span>=<span class="string">".NoLoginActivity"</span>&gt;</div><div class="line">    <span class="tag">&lt;<span class="name">TextView</span></span></div><div class="line">        <span class="attr">android:id</span>=<span class="string">"@+id/tv_msg"</span></div><div class="line">        <span class="attr">android:layout_centerInParent</span>=<span class="string">"true"</span></div><div class="line">        <span class="attr">android:text</span>=<span class="string">"当前未登录"</span></div><div class="line">        <span class="attr">android:gravity</span>=<span class="string">"center"</span></div><div class="line">        <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></div><div class="line">        <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span></div><div class="line">        <span class="attr">android:textSize</span>=<span class="string">"20sp"</span> /&gt;</div><div class="line">    <span class="tag">&lt;<span class="name">Button</span></span></div><div class="line">        <span class="attr">android:layout_width</span>=<span class="string">"wrap_content"</span></div><div class="line">        <span class="attr">android:text</span>=<span class="string">"去登陆"</span></div><div class="line">        <span class="attr">android:onClick</span>=<span class="string">"goLogin"</span></div><div class="line">        <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span> /&gt;</div><div class="line">    <span class="tag">&lt;<span class="name">Button</span></span></div><div class="line">        <span class="attr">android:layout_width</span>=<span class="string">"wrap_content"</span></div><div class="line">        <span class="attr">android:text</span>=<span class="string">"继续启动自己"</span></div><div class="line">        <span class="attr">android:onClick</span>=<span class="string">"startUpdateUI"</span></div><div class="line">        <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span> /&gt;</div><div class="line"><span class="tag">&lt;/<span class="name">LinearLayout</span>&gt;</span></div></pre></td></tr></table></figure>
@@ -451,8 +451,8 @@ public void onEventMainThread(EventObject event) {
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/header.png"
-               alt="江俊超" />
-          <p class="site-author-name" itemprop="name">江俊超</p>
+               alt="aohanyao" />
+          <p class="site-author-name" itemprop="name">aohanyao</p>
           <p class="site-description motion-element" itemprop="description">Android</p>
         </div>
         <nav class="site-state motion-element">
@@ -527,7 +527,7 @@ public void onEventMainThread(EventObject event) {
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">江俊超</span>
+  <span class="author" itemprop="copyrightHolder">aohanyao</span>
 </div>
 
 <div class="powered-by">
